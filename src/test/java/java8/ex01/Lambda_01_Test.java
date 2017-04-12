@@ -7,6 +7,7 @@ import org.junit.Test;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,7 +24,16 @@ public class Lambda_01_Test {
     // tag::filter[]
     private List<Person> filter(List<Person> persons, PersonPredicate predicate) {
         // TODO implementer la méthode
-        return null;
+    	
+    	List<Person> result = new ArrayList<Person>();
+    	
+    	for (Person p : persons) {
+    		
+    		if(predicate.test(p)) {
+    			result.add(p);	
+    		}
+    	}
+        return result;
     }
     // end::filter[]
 
@@ -35,8 +45,8 @@ public class Lambda_01_Test {
         List<Person> personList = Data.buildPersonList(100);
 
         // TODO result ne doit contenir que des personnes adultes (age >= 18)
-        List<Person> result = filter(personList, null);
-
+        List<Person> result = filter(personList, p -> p.getAge() >= 18);
+        
         assertThat(result.size(), is(83));
         assertThat(result, everyItem(hasProperty("age", greaterThan(17))));
     }
@@ -49,7 +59,7 @@ public class Lambda_01_Test {
         List<Person> personList = Data.buildPersonList(100);
 
         // TODO result ne doit contenir que des personnes dont le prénom est "first_10"
-        List<Person> result = filter(personList, null);
+        List<Person> result = filter(personList, p -> p.getFirstname().equals("first 10"));
 
         assertThat(result.size(), is(1));
         assertThat(result, everyItem(hasProperty("firstname", is("first_10"))));
