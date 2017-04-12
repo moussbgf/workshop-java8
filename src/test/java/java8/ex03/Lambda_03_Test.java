@@ -25,7 +25,8 @@ public class Lambda_03_Test {
        // TOD0
     }
     // end::forEach[]
-
+    
+    
 
     // tag::test_verify_person[]
     @Test
