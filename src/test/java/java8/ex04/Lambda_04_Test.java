@@ -13,58 +13,63 @@ import java.util.List;
  * Exercice 04 - FuncCollection
  */
 public class Lambda_04_Test {
+	// tag::interfaces[]
+		interface GenericPredicate<T> {
+			boolean test(T entity);
+		}
 
-    // tag::interfaces[]
-    interface GenericPredicate<T> {
-        // TODO
-    }
+		interface GenericMapper<T, E> {
+			E map(T entity);
+		}
 
-    interface GenericMapper<T, E> {
-        // TODO
-    }
+		interface Processor<T> {
+			void process(T entity);
+		}
+		// end::interfaces[]
 
-    interface Processor<T> {
-        // TODO
-    }
-    // end::interfaces[]
+		// tag::FuncCollection[]
+		class FuncCollection<T> {
 
-    // tag::FuncCollection[]
-    class FuncCollection<T> {
+			private Collection<T> list = new ArrayList<>();
 
-        private Collection<T> list = new ArrayList<>();
+			public void add(T a) {
+				list.add(a);
+			}
 
-        public void add(T a) {
-            list.add(a);
-        }
+			public void addAll(Collection<T> all) {
+				for (T el : all) {
+					list.add(el);
+				}
+			}
+			// end::FuncCollection[]
 
-        public void addAll(Collection<T> all) {
-            for(T el:all) {
-                list.add(el);
-            }
-        }
-    // end::FuncCollection[]
+			// tag::methods[]
+			private FuncCollection<T> filter(GenericPredicate<T> predicate) {
+				FuncCollection<T> result = new FuncCollection<>();
+				for (T entity : list) {
+					if (predicate.test(entity)) {
+						result.add(entity);
+					}
+				}
+				return result;
+			}
 
-        // tag::methods[]
-        private FuncCollection<T> filter(GenericPredicate<T> predicate) {
-            FuncCollection<T> result = new FuncCollection<>();
-            // TODO
-            return result;
-        }
+			private <E> FuncCollection<E> map(GenericMapper<T, E> mapper) {
+				FuncCollection<E> result = new FuncCollection<>();
+				for (T entity : list) {
+					result.add(mapper.map(entity));
+				}
+				return result;
+			}
 
-        private <E> FuncCollection<E> map(GenericMapper<T, E> mapper) {
-            FuncCollection<E> result = new FuncCollection<>();
-            // TODO
-            return result;
-        }
+			private void forEach(Processor<T> processor) {
+				for (T entity : list) {
+					processor.process(entity);
+				}
+			}
+			// end::methods[]
 
-        private void forEach(Processor<T> processor) {
-           // TODO
-        }
-        // end::methods[]
-
-    }
-
-
+		}
 
     // tag::test_filter_map_forEach[]
     @Test
