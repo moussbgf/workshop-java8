@@ -6,6 +6,7 @@ import java8.data.domain.Order;
 import java8.data.domain.Pizza;
 import org.junit.Test;
 
+import java.util.Comparator;
 import java.util.IntSummaryStatistics;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,8 +25,13 @@ public class Stream_02_Test {
         List<Order> orders = new Data().getOrders();
 
         // Trouver la liste des clients ayant déjà passés une commande
-        List<Customer> result = null;
-
+        List<Customer> result = orders.stream()
+        		.map(Order::getCustomer)
+        		.distinct()
+        		.collect(Collectors.toList());
+        
+        
+        
         assertThat(result, hasSize(2));
     }
 
@@ -36,7 +42,10 @@ public class Stream_02_Test {
 
         // TODO calculer les statistiques sur les prix des pizzas vendues
         // TODO utiliser l'opération summaryStatistics
-        IntSummaryStatistics result = null;
+        IntSummaryStatistics result = orders.stream()
+        		.flatMap(o -> o.getPizzas().stream())
+        		.mapToInt(Pizza::getPrice)
+        		.summaryStatistics();
 
 
         assertThat(result.getSum(), is(10900L));
